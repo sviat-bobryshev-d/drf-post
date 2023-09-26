@@ -1,11 +1,17 @@
 APP=
-
+ENV=test
 lint:
 	black ./
 	ruff --fix ./
 
-up:
-	python manage.py runserver
+use_secrets:
+	cp ./secrets/$(ENV)/.env ./.
+
+up: use_secrets
+	docker compose up -d
+
+down:
+	docker compose down
 
 migrations:
 	python manage.py makemigrations $(APP)
