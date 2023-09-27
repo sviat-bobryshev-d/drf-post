@@ -10,6 +10,9 @@ use_secrets:
 up: use_secrets
 	docker compose up -d
 
+tests: up
+	docker exec -it backend poetry run pytest
+
 down:
 	docker compose down
 
