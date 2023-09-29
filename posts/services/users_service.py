@@ -6,7 +6,7 @@ from posts.models import Profile
 class UsersService:
     def has_profile(self, user: User) -> bool:
         try:
-            user.profile
+            user.profile  # noqa
             return True
         except Profile.DoesNotExist:
             return False
