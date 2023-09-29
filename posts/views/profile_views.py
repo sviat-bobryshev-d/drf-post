@@ -7,7 +7,7 @@ from rest_framework.status import HTTP_201_CREATED, HTTP_204_NO_CONTENT
 from rest_framework.views import APIView
 
 from posts.permissions import DoesUserAffectHisObject, IsOwnerOrReadOnly
-from posts.serializers import ProfileSerializer
+from posts.serializers import DetailedProfileSerializer
 from posts.services import UsersService
 
 
@@ -21,7 +21,7 @@ class ProfileAPIView(APIView):
 
     def post(self, request: Request, *args, **kwargs) -> Response:
         data = request.data | {"owner": kwargs["user_id"]}
-        serializer = ProfileSerializer(data=data)
+        serializer = DetailedProfileSerializer(data=data)
         serializer.is_valid(raise_exception=True)
         serializer.save(owner=request.user)
         headers = self.__get_success_headers(serializer.data)
@@ -33,7 +33,7 @@ class ProfileAPIView(APIView):
             raise Http404()
         profile = request.user.profile
         self.check_object_permissions(request, profile)
-        serializer = ProfileSerializer(profile, data=data)
+        serializer = DetailedProfileSerializer(profile, data=data)
         serializer.is_valid(raise_exception=True)
         serializer.save(owner=request.user)
         return Response(serializer.data)
@@ -44,7 +44,7 @@ class ProfileAPIView(APIView):
             raise Http404()
         profile = request.user.profile
         self.check_object_permissions(request, profile)
-        serializer = ProfileSerializer(profile, data=data, partial=True)
+        serializer = DetailedProfileSerializer(profile, data=data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save(owner=request.user)
         return Response(serializer.data)
