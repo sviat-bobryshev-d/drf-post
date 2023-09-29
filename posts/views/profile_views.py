@@ -17,6 +17,7 @@ class ProfileAPIView(APIView):
         IsOwnerOrReadOnly,
         DoesUserAffectHisObject,
     )
+    serializer_class = DetailedProfileSerializer
     users_service = UsersService()
 
     def post(self, request: Request, *args, **kwargs) -> Response:

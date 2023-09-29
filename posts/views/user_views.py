@@ -10,6 +10,7 @@ from posts.serializers import UserSerializer
 
 class UserAPIView(APIView):
     permission_classes = (IsAuthenticated,)
+    serializer_class = UserSerializer
 
     def get(self, request: Request, user_id: int, *args, **kwargs) -> Response:
         user = get_object_or_404(User, pk=user_id)
