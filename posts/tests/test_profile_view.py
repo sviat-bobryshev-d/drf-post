@@ -31,6 +31,15 @@ class TestProfileView:
         assert body["preferences"] == attributes["preferences"] == profile.preferences
         assert body["owner"] == user.id
 
+    def test_get_by_owner(self, django_user_model):
+        owner = django_user_model.objects.create_user("test-owner")
+        ProfileFactory(owner=owner)
+
+        self.client.force_login(owner)
+        response = self.client.get(f"/users/{owner.id}/profile/")
+
+        assert response.status_code == 405
+
     def test_update_by_owner(self, django_user_model):
         owner = django_user_model.objects.create_user("test-owner")
         profile = ProfileFactory(owner=owner)
@@ -144,5 +153,30 @@ class TestProfileView:
 
         self.client.force_login(attacker)
         response = self.client.delete(f"/users/{victim.id}/profile/")
+
+        assert response.status_code == 403
+
+    def test_get_anonymous_error(self):
+        response = self.client.get("/users/1243/profile/")
+
+        assert response.status_code == 403
+
+    def test_create_anonymous_error(self):
+        response = self.client.post("/users/1243/profile/")
+
+        assert response.status_code == 403
+
+    def test_update_anonymous_error(self):
+        response = self.client.put("/users/1234/profile/")
+
+        assert response.status_code == 403
+
+    def test_partial_update_anonymous_error(self):
+        response = self.client.patch("/users/1234/profile/")
+
+        assert response.status_code == 403
+
+    def test_delete_anonymous_error(self):
+        response = self.client.delete("/users/1234/profile/")
 
         assert response.status_code == 403
