@@ -1,2 +1,3 @@
-from .category import CategoryViewSet
-from .post import PostViewSet
+from .category_viewset import CategoryViewSet
+from .post_viewset import PostViewSet
+from .profile_views import ProfileAPIView

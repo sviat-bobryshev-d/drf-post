@@ -13,3 +13,11 @@ class IsOwnerOrReadOnly(BasePermission):
         if request.method in SAFE_METHODS:
             return True
         return obj.owner == request.user
+
+
+class DoesUserAffectHisObject(BasePermission):
+    def has_permission(self, request, view):
+        return view.kwargs.get("user_id") == request.user.id
+
+    def has_object_permission(self, request, view, obj):
+        return view.kwargs.get("user_id") == request.user.id
