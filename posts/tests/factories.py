@@ -1,7 +1,7 @@
 import factory
 from django.contrib.auth.models import User
 
-from posts.models import Category, Post
+from posts.models import Category, Post, Profile
 
 
 class UserFactory(factory.django.DjangoModelFactory):
@@ -39,3 +39,12 @@ class PostFactory(factory.django.DjangoModelFactory):
             return
 
         self.categories.add(*extracted)
+
+
+class ProfileFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Profile
+
+    bio = factory.Sequence(lambda n: "bio-%d" % n)
+    preferences = factory.Sequence(lambda n: "preferences-%d" % n)
+    owner = factory.SubFactory(UserFactory)
