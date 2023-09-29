@@ -7,6 +7,7 @@ lint:
 use_secrets:
 	cp ./secrets/$(ENV)/.env ./.
 
+
 up: use_secrets
 	docker compose up -d
 
